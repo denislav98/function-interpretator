@@ -21,10 +21,12 @@ public class FunctionParseUtils {
         this.functionFileDAO = functionFileDAO;
     }
 
+    // взима името на функцията пр. func1(a,b) -> func1
     public static String parseFunctionName(String definition) {
         return getFunctionDefinitionParts(definition)[0];
     }
 
+    // взима списък от аргументи на функцията пр. func1(a,b) -> [a,b]
     public static List<String> parseFunctionArguments(String definition) {
         String functionArguments = getFunctionDefinitionParts(definition)[1];
         MyLinkedList<String> arguments = new MyLinkedList<>();
@@ -34,12 +36,13 @@ public class FunctionParseUtils {
         return arguments;
     }
 
+    // взима списък от аргументи на функцията пр. func1(1,1) -> [1,1]
     public List<String> parseFunctionParameters(String parameters) {
         List<String> paramsArr = parseFunctionParametersFromStdin(parameters);
 
         List<String> finalParams = new LinkedList<>();
         for (String param : paramsArr) {
-            if (param.contains("func")) {
+            if (param.contains("func")) {     // в случай на вложена функция -> func2(a,b,c) -> func1(a,b) | c
                 String functionName = parseFunctionName(param);
                 Function function = functionFileDAO.read(functionName);
                 List<String> functionParams = function.getArguments();

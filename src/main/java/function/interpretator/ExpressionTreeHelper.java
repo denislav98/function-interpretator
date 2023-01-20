@@ -17,6 +17,12 @@ public class ExpressionTreeHelper {
 
     private ExpressionTreeHelper() {}
 
+    // решаване на дърво
+    // func1(a,b,c) -> 1,1,0
+    // KEY - VALUE
+    // а -> 1
+    // b -> 1
+    // c -> 0
     public static boolean solveExpressionTree(Node tree, Map<String, String> paramsPerArguments) {
         for (Map.Entry<String, String> entry : paramsPerArguments.entrySet()) {
             Node node = findNode(tree, entry.getKey());
@@ -31,7 +37,15 @@ public class ExpressionTreeHelper {
         return booleanValue.equals("1");
     }
 
-    private static Node findNode(Node root, String value) {
+
+    //   &
+    //  / \
+    // a   b
+    // рекурсивно търсене на даден възел(node)
+    // проверка дали не е корен на дървото
+    // ако не е корен - търсим първо в лявото под-дърво
+    // ако не е корен и не е в лявото под-дърво - търсим в дясното под-дърво
+    private static Node findNode(Node root, String value) { // tree и а
         if (root == null) {
             return null; // no such node
         }

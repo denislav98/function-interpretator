@@ -2,7 +2,6 @@ package function.interpretator.validators;
 
 import static java.lang.String.format;
 import static function.interpretator.util.ExpressionUtils.isOperand;
-import static function.interpretator.util.ExpressionUtils.obtainOperatorType;
 import static function.interpretator.util.FunctionParseUtils.parseFunctionName;
 
 import java.util.ArrayList;
@@ -21,16 +20,12 @@ public class FunctionValidator {
 
     public void validateParameters(List<String> functionArgs, List<String> functionParams) {
         List<String> operands = new ArrayList<>();
-        List<String> operators = new ArrayList<>();
         for (String parameter : functionParams) {
             if (isOperand(parameter)) {
-                operands.add(parameter);
-            } else {
-                obtainOperatorType(parameter);
-                operators.add(parameter);
+                operands.add(parameter); // ако е буква - а,б,ц
             }
 
-            if (parameter.contains("func")) {
+            if (parameter.contains("func")) { // ако е функция проверка за тази функция и нейните параметри
                 String funcName = parseFunctionName(parameter);
                 Function innerFunction = functionFileDAO.read(funcName);
                 List<String> funcParams = innerFunction.getArguments();
@@ -49,7 +44,7 @@ public class FunctionValidator {
             List<String> notDefinedOperands = new ArrayList<>(operands);
             notDefinedOperands.removeAll(functionArgs);
             throw new IllegalStateException(
-                    format("Failed to define function.The following operands: '%s' are not defined",
+                    format("Failed to define function.The following parameters: '%s' are not defined",
                             notDefinedOperands));
         }
     }
