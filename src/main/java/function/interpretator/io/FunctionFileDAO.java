@@ -38,13 +38,26 @@ public class FunctionFileDAO implements IFunctionFileDao {
         }
     }
 
+    public void delete(String functionName) {
+        try {
+            String functionFilePath = getFunctionFilePath(functionName);
+            Files.delete(Paths.get(functionFilePath));
+        } catch (IOException e) {
+            LOGGER.error(format("Failed to delete function '%s'", functionName));
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public List<Function> readAll() {
-        try (Stream<Path> paths = Files.walk(PATH_TO_FUNCTIONS)) {
-            return paths.filter(Files::isRegularFile)
-                    .map(path -> {
-                        String functionName = path.toFile().getName().replace(".json", "");
-                        return read(functionName);
+        try (Stream<Path> paths = Files
+                .walk(PATH_TO_FUNCTIONS)) { // четем всички файлове под /functions папката
+            return paths.filter(Files::isRegularFile) // проверка за файл
+                    .map(path -> { // за всеки път на файл
+                        // /Users/denislavminchev/function-interpretator/src/main/resources/functions/func4.json
+                        String functionName = path.toFile().getName()
+                                .replace(".json", ""); // екстрактваме само името на функцията
+                        return read(functionName); // четем функцията
                     })
                     .collect(toList());
         } catch (IOException e) {

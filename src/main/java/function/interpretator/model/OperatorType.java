@@ -1,5 +1,6 @@
 package function.interpretator.model;
 
+// за тип на операциите
 public enum OperatorType {
 
     AND("&"),

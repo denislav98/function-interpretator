@@ -14,7 +14,7 @@ public class ExpressionUtils {
 
     private ExpressionUtils() {}
 
-    public static boolean isOperand(String value) {
+    public static boolean isOperand(String value) { // проверка за операнд - пр: а -> true    & -> false
         if (value == null || value.length() != 1) {
             return false;
         }
@@ -22,16 +22,7 @@ public class ExpressionUtils {
         return Character.isLetter(value.charAt(0));
     }
 
-    public static boolean isOperator(String value) {
-        try {
-            obtainOperatorType(value);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
-
-    public static OperatorType obtainOperatorType(String str) {
+    public static OperatorType obtainOperatorType(String str) { // определя вида на оператора
         switch (str) {
         case "&":
             return AND;
@@ -44,7 +35,7 @@ public class ExpressionUtils {
         }
     }
 
-    public static List<String> filterOperands(List<String> arguments) {
+    public static List<String> filterOperands(List<String> arguments) { // връща списък от операнди - [a,b,&,c,!] -> [a,b,c]
         List<String> operands = new ArrayList<>();
         for (String parameter : arguments) {
             if (isOperand(parameter)) {

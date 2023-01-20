@@ -3,6 +3,7 @@ package function.interpretator;
 import java.util.Scanner;
 
 import function.interpretator.action.DefineFunctionAction;
+import function.interpretator.action.DeleteFunctionAction;
 import function.interpretator.action.IFunctionAction;
 import function.interpretator.action.PrintFunctionsAction;
 import function.interpretator.action.SolveFunctionAction;
@@ -18,7 +19,8 @@ public class Main {
                         "1. DEFINE function\n" +
                         "2. SOLVE function \n" +
                         "3. PRINT functions \n" +
-                        "4. EXIT");
+                        "4. DELETE functions \n" +
+                        "5. EXIT");
 
                 int choice = Integer.parseInt(new Scanner(System.in).nextLine());
 
@@ -32,6 +34,11 @@ public class Main {
                     IFunctionAction action = new PrintFunctionsAction(dao);
                     action.execute();
                 } else if (choice == 4) {
+                    IFunctionAction print = new PrintFunctionsAction(dao);
+                    print.execute();
+                    IFunctionAction delete = new DeleteFunctionAction(dao);
+                    delete.execute();
+                } else if (choice == 5) {
                     return;
                 }
             } catch (RuntimeException e) {

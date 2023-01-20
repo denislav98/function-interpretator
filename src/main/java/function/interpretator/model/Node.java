@@ -11,7 +11,7 @@ public abstract class Node {
         this(name, null, null);
     }
 
-    public Node(String name, Node left, Node right) {
+    Node(String name, Node left, Node right) {
         this.name = name;
         this.left = left;
         this.right = right;

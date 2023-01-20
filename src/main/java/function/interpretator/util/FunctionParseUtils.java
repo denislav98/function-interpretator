@@ -3,12 +3,13 @@ package function.interpretator.util;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import function.interpretator.io.FunctionFileDAO;
 import function.interpretator.model.Function;
+import function.interpretator.structures.MyLinkedList;
 
 public class FunctionParseUtils {
 
@@ -26,7 +27,11 @@ public class FunctionParseUtils {
 
     public static List<String> parseFunctionArguments(String definition) {
         String functionArguments = getFunctionDefinitionParts(definition)[1];
-        return new LinkedList<>(asList(functionArguments.split(",")));
+        MyLinkedList<String> arguments = new MyLinkedList<>();
+        for (String argument : split(functionArguments, ",")) {
+            arguments.add(argument);
+        }
+        return arguments;
     }
 
     public List<String> parseFunctionParameters(String parameters) {
@@ -49,7 +54,7 @@ public class FunctionParseUtils {
     }
 
     private static List<String> parseFunctionParametersFromStdin(String parameters) {
-        return asList(parameters.split(" "));
+        return asList(split(parameters, " "));
     }
 
     private static String[] getFunctionDefinitionParts(String definition) {
@@ -60,5 +65,40 @@ public class FunctionParseUtils {
         }
 
         return parts;
+    }
+
+    public static String[] split(String string, String delem) {
+        List<String> list = new ArrayList<>();
+        char[] charArr = string.toCharArray();
+        char[] delemArr = delem.toCharArray();
+        int counter = 0;
+        for (int i = 0; i < charArr.length; i++) {
+            int k = 0;
+            for (int j = 0; j < delemArr.length; j++) {
+                if (charArr[i + j] == delemArr[j]) {
+                    k++;
+                } else {
+                    break;
+                }
+            }
+            if (k == delemArr.length) {
+                String s = "";
+                while (counter < i) {
+                    s += charArr[counter];
+                    counter++;
+                }
+                counter = i = i + k;
+                list.add(s);
+            }
+        }
+        String s = "";
+        if (counter < charArr.length) {
+            while (counter < charArr.length) {
+                s += charArr[counter];
+                counter++;
+            }
+            list.add(s);
+        }
+        return list.toArray(new String[list.size()]);
     }
 }
