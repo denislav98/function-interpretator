@@ -1,5 +1,6 @@
 package function.interpretator;
 
+import static function.interpretator.model.OperatorType.NOT;
 import static function.interpretator.util.ExpressionUtils.isOperand;
 import static function.interpretator.util.ExpressionUtils.obtainOperatorType;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 import function.interpretator.model.Node;
 import function.interpretator.model.OperandNode;
 import function.interpretator.model.OperatorNode;
+import function.interpretator.model.OperatorType;
 import function.interpretator.structures.Stack;
 
 public class ExpressionTreeHelper {
@@ -54,13 +56,19 @@ public class ExpressionTreeHelper {
                 temp = new OperandNode(currentParam);
                 st.push(temp);
             } else {
-                temp = new OperatorNode(currentParam, obtainOperatorType(currentParam));
+                OperatorType operatorType = obtainOperatorType(currentParam);
+                temp = new OperatorNode(currentParam, operatorType);
 
-                Node t1 = st.pop();
-                Node t2 = st.pop();
+                if (operatorType.name().equals(NOT.name())) {
+                    Node t1 = st.pop();
+                    temp.setRight(t1);
+                } else {
+                    Node t1 = st.pop();
+                    Node t2 = st.pop();
 
-                temp.setLeft(t2);
-                temp.setRight(t1);
+                    temp.setLeft(t2);
+                    temp.setRight(t1);
+                }
 
                 st.push(temp);
             }

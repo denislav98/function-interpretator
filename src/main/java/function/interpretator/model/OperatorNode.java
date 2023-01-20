@@ -11,6 +11,6 @@ public class OperatorNode extends Node {
 
     @Override
     public boolean getValue() {
-        return type.evaluateResult(getLeft().getValue(), getRight().getValue());
+        return type.evaluateResult(getLeft(), getRight());
     }
 }

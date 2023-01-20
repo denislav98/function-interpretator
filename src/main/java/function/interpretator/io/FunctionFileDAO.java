@@ -40,8 +40,8 @@ public class FunctionFileDAO implements IFunctionFileDao {
 
     @Override
     public List<Function> readAll() {
-        try (Stream<Path> filesStream = Files.walk(PATH_TO_FUNCTIONS)) {
-            return filesStream.filter(Files::isRegularFile)
+        try (Stream<Path> paths = Files.walk(PATH_TO_FUNCTIONS)) {
+            return paths.filter(Files::isRegularFile)
                     .map(path -> {
                         String functionName = path.toFile().getName().replace(".json", "");
                         return read(functionName);

@@ -12,14 +12,16 @@ public enum OperatorType {
         this.name = name;
     }
 
-    public boolean evaluateResult(boolean a, boolean b) {
+    public boolean evaluateResult(Node left, Node right) {
+        boolean a = left != null && left.getValue();
+        boolean b = right != null && right.getValue();
         switch (this) {
         case AND:
             return a && b;
         case OR:
             return a || b;
         case NOT:
-            return !a && !b;
+            return !b;
         default:
             throw new IllegalStateException("No such operation entered!");
         }
